@@ -6,6 +6,22 @@ class Repository {
 
     #schema;
 
+    get model() {
+        return this.#model;
+    }
+
+    set model(value) {
+        this.#model = value;
+    }
+
+    get schema() {
+        return this.#schema;
+    }
+
+    set schema(value) {
+        this.#schema = value;
+    }
+
     constructor(model, schema) {
         this.#model = model;
         this.#schema = schema;
