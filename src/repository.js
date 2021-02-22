@@ -37,16 +37,14 @@ class Repository {
 
     all() {
         return this.baseQuery().get().then(collection => {
-            return collection.map(record => {
-                return record.$attributes;
-            });
+            return this.transformCollection(collection);
         });
     }
 
     find(id) {
         return this.baseQuery().where(this.#schema.primaryKey.name, id).first().then(record => {
             if (record) {
-                return record.$attributes;
+                return this.transformRecord(record);
             }
 
             return null;
@@ -65,15 +63,13 @@ class Repository {
 
     findMany(ids) {
         return this.baseQuery().where(this.#schema.primaryKey.name, 'in', ids).get().then(collection => {
-            return collection.map(record => {
-                return record.$attributes;
-            });
+            return this.transformCollection(collection);
         });
     }
 
     save(attributes) {
         return this.#model.record(attributes).$save().then(record => {
-            return record.$attributes;
+            return this.transformRecord(record);
         }, error => {
             throw new ErrorBag(this.#schema, error);
         });
@@ -81,6 +77,16 @@ class Repository {
 
     baseQuery() {
         return this.#model.query();
+    }
+
+    transformCollection(collection) {
+        return collection.map(record => {
+            return record.$attributes;
+        });
+    }
+
+    transformRecord(record) {
+        return record.$attributes;
     }
 
     getModel() {
