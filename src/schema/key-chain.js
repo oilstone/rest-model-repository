@@ -1,22 +1,22 @@
 class KeyChain {
     #primaryKey;
 
+    get primaryKey() {
+        return this.getPrimaryKey();
+    }
+
     set primaryKey(property) {
-        this.setPrimaryKey(property);
+        return this.setPrimaryKey(property);
+    }
+
+    getPrimaryKey() {
+        return this.#primaryKey;
     }
 
     setPrimaryKey(property) {
         this.#primaryKey = property;
 
         return this;
-    }
-
-    get primaryKey() {
-        return this.getPrimaryKey();
-    }
-
-    getPrimaryKey() {
-        return this.#primaryKey;
     }
 }
 

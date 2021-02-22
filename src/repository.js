@@ -7,19 +7,19 @@ class Repository {
     #schema;
 
     get model() {
-        return this.#model;
+        return this.getModel();
     }
 
     set model(value) {
-        this.#model = value;
+        return this.setModel(value);
     }
 
     get schema() {
-        return this.#schema;
+        return this.getSchema();
     }
 
     set schema(value) {
-        this.#schema = value;
+        return this.setSchema(value);
     }
 
     constructor(model, schema) {
@@ -54,7 +54,7 @@ class Repository {
     }
 
     findOrFail(id) {
-        let item = this.find(id).then(item => {
+        return this.find(id).then(item => {
             if (!item) {
                 throw Error(`Could not find record [${id}]`)
             }
@@ -72,7 +72,7 @@ class Repository {
     }
 
     save(attributes) {
-        this.#model.record(attributes).$save().then(record => {
+        return this.#model.record(attributes).$save().then(record => {
             return record.$attributes;
         }, error => {
             throw new ErrorBag(this.#schema, error);
@@ -81,6 +81,26 @@ class Repository {
 
     #baseQuery() {
         return this.#model.query();
+    }
+
+    getModel() {
+        return this.#model;
+    }
+
+    setModel(value) {
+        this.#model = value;
+
+        return this;
+    }
+
+    getSchema() {
+        return this.#schema;
+    }
+
+    setSchema(value) {
+        this.#schema = value;
+
+        return this;
     }
 }
 

@@ -6,6 +6,18 @@ class Schema {
 
     #items = [];
 
+    get primaryKey() {
+        return this.getPrimaryKey();
+    }
+
+    get items() {
+        return this.getItems();
+    }
+
+    set items(value) {
+        return this.setItems(value);
+    }
+
     constructor() {
         this.#keyChain = new KeyChain();
     }
@@ -28,12 +40,18 @@ class Schema {
         return blueprint;
     }
 
-    get primaryKey() {
-        return this.getPrimaryKey();
-    }
-
     getPrimaryKey() {
         return this.#keyChain.primaryKey;
+    }
+
+    getItems() {
+        return this.#items;
+    }
+
+    setItems(value) {
+        this.#items = value;
+
+        return this;
     }
 }
 
