@@ -36,7 +36,7 @@ class Repository {
     }
 
     all() {
-        return this.#baseQuery().get().then(collection => {
+        return this.baseQuery().get().then(collection => {
             return collection.map(record => {
                 return record.$attributes;
             });
@@ -44,7 +44,7 @@ class Repository {
     }
 
     find(id) {
-        return this.#baseQuery().where(this.#schema.primaryKey.name, id).first().then(record => {
+        return this.baseQuery().where(this.#schema.primaryKey.name, id).first().then(record => {
             if (record) {
                 return record.$attributes;
             }
@@ -64,7 +64,7 @@ class Repository {
     }
 
     findMany(ids) {
-        return this.#baseQuery().where(this.#schema.primaryKey.name, 'in', ids).get().then(collection => {
+        return this.baseQuery().where(this.#schema.primaryKey.name, 'in', ids).get().then(collection => {
             return collection.map(record => {
                 return record.$attributes;
             });
@@ -79,7 +79,7 @@ class Repository {
         });
     }
 
-    #baseQuery() {
+    baseQuery() {
         return this.#model.query();
     }
 
