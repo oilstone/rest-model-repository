@@ -23,9 +23,10 @@ class Repository {
         return this.setSchema(value);
     }
 
-    constructor(model, schema) {
+    constructor(model, schema, transformer = null) {
         this.#model = model;
         this.#schema = schema;
+        this.#transformer = transformer || new Transformer(schema);
     }
 
     mix(mixins) {
