@@ -1,5 +1,4 @@
 import Blender from '@oilstone/blender';
-import Transformer from './transformer';
 import ErrorBag from './errors/bag';
 
 class Repository {
@@ -48,19 +47,19 @@ class Repository {
     }
 
     all() {
-        return Transformer.many(
+        return this.#transformer.many(
             this.baseQuery().get()
         );
     }
 
     find(id) {
-        return Transformer.one(
+        return this.#transformer.one(
             this.baseQuery().find(id)
         );
     }
 
     findOrFail(id) {
-        return Transformer.one(
+        return this.#transformer.one(
             this.find(id)
         ).then(record => {
             if (!record) {
@@ -72,14 +71,14 @@ class Repository {
     }
 
     findMany(ids) {
-        return Transformer.many(
+        return this.#transformer.many(
             this.baseQuery().where(this.#schema.primaryKey.name, 'in', ids).get()
         );
     }
 
     save(attributes) {
         try {
-            return Transformer.one(
+            return this.#transformer.one(
                 this.#model.record(attributes).$save()
             )
         } catch (error) {
