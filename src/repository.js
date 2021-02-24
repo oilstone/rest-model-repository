@@ -7,6 +7,8 @@ class Repository {
 
     #schema;
 
+    #transformer;
+
     get model() {
         return this.getModel();
     }
@@ -21,6 +23,14 @@ class Repository {
 
     set schema(value) {
         return this.setSchema(value);
+    }
+
+    get transformer() {
+        return this.getTransformer();
+    }
+
+    set transformer(value) {
+        return this.setTransformer(value);
     }
 
     constructor(model, schema, transformer = null) {
@@ -97,6 +107,16 @@ class Repository {
 
     setSchema(value) {
         this.#schema = value;
+
+        return this;
+    }
+
+    getTransformer() {
+        return this.#transformer;
+    }
+
+    setTransformer(value) {
+        this.#transformer = value;
 
         return this;
     }
