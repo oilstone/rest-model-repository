@@ -32,7 +32,7 @@ class Transformer {
             let intersectionKeys = null;
 
             return collection.map(record => {
-                let attributes = record.attributes;
+                let attributes = record.$attributes;
 
                 if (!intersectionKeys) {
                     intersectionKeys = this.intersectionKeys(attributes);
