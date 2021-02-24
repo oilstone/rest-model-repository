@@ -15,6 +15,8 @@ class Transformer {
                 output.push(name);
             }
         });
+
+        return output;
     }
 
     intersect(input, keys) {
