@@ -1,5 +1,6 @@
 import Blender from '@oilstone/blender';
 import ErrorBag from './errors/bag';
+import Transformer from './transformer';
 
 class Repository {
     #model;
