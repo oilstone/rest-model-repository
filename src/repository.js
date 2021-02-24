@@ -1,4 +1,5 @@
 import Blender from '@oilstone/blender';
+import Transformer from './transformer';
 import ErrorBag from './errors/bag';
 
 class Repository {
@@ -36,57 +37,47 @@ class Repository {
     }
 
     all() {
-        return this.baseQuery().get().then(collection => {
-            return this.transformCollection(collection);
-        });
+        return Transformer.many(
+            this.baseQuery().get()
+        );
     }
 
     find(id) {
-        return this.baseQuery().find(id).then(record => {
-            if (record) {
-                return this.transformRecord(record);
-            }
-
-            return null;
-        });
+        return Transformer.one(
+            this.baseQuery().find(id)
+        );
     }
 
     findOrFail(id) {
-        return this.find(id).then(item => {
-            if (!item) {
+        return Transformer.one(
+            this.find(id)
+        ).then(record => {
+            if (!record) {
                 throw Error(`Could not find record [${id}]`)
             }
 
-            return item;
+            return record;
         });
     }
 
     findMany(ids) {
-        return this.baseQuery().where(this.#schema.primaryKey.name, 'in', ids).get().then(collection => {
-            return this.transformCollection(collection);
-        });
+        return Transformer.many(
+            this.baseQuery().where(this.#schema.primaryKey.name, 'in', ids).get()
+        );
     }
 
     save(attributes) {
-        return this.#model.record(attributes).$save().then(record => {
-            return this.transformRecord(record);
-        }, error => {
+        try {
+            return Transformer.one(
+                this.#model.record(attributes).$save()
+            )
+        } catch (error) {
             throw new ErrorBag(this.#schema, error);
-        });
+        }
     }
 
     baseQuery() {
         return this.#model.query();
-    }
-
-    transformCollection(collection) {
-        return collection.map(record => {
-            return record.$attributes;
-        });
-    }
-
-    transformRecord(record) {
-        return record.$attributes;
     }
 
     getModel() {
