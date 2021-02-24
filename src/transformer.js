@@ -39,7 +39,7 @@ class Transformer {
                 }
 
                 return this.intersect(
-                    record.$attributes,
+                    attributes,
                     intersectionKeys
                 );
             });
