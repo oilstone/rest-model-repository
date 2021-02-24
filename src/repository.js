@@ -42,7 +42,7 @@ class Repository {
     }
 
     find(id) {
-        return this.baseQuery().where(this.#schema.primaryKey.name, id).first().then(record => {
+        return this.baseQuery().find(id).then(record => {
             if (record) {
                 return this.transformRecord(record);
             }
