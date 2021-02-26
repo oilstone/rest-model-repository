@@ -1,5 +1,6 @@
 import Blender from '@oilstone/blender';
 import ErrorBag from './errors/bag';
+import ValidationError from './errors/validation';
 import Transformer from './transformer';
 
 class Repository {
@@ -78,13 +79,13 @@ class Repository {
     }
 
     save(attributes) {
-        try {
-            return this.#transformer.one(
-                this.#model.record(attributes).$save()
-            )
-        } catch (error) {
-            throw new ErrorBag(this.#schema, error);
-        }
+        return this.#transformer.one(
+            this.#model.record(attributes).$save().catch(error => {
+                throw new ValidationError(error.errors[0].title).setBag(
+                    ErrorBag(this.#schema).extract(error)
+                )
+            })
+        );
     }
 
     baseQuery() {

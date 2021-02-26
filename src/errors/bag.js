@@ -1,7 +1,7 @@
 class Bag {
     #schema;
 
-    #payload;
+    items = {};
 
     get schema() {
         return this.getSchema();
@@ -11,17 +11,8 @@ class Bag {
         return this.setSchema(value);
     }
 
-    get payload() {
-        return this.getPayload();
-    }
-
-    set payload(value) {
-        return this.setPayload(value);
-    }
-
-    constructor(schema, payload) {
+    constructor(schema) {
         this.#schema = schema;
-        this.#payload = payload;
     }
 
     getSchema() {
@@ -34,14 +25,12 @@ class Bag {
         return this;
     }
 
-    getPayload() {
-        return this.#payload;
+    extract(error) {
+        this.items = error.errors[0].meta.errorMessages;
     }
 
-    setPayload(value) {
-        this.#payload = value;
-
-        return this;
+    any() {
+        return Object.keys(this.items).length;
     }
 }
 
