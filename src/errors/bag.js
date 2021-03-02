@@ -1,36 +1,46 @@
 class Bag {
-    #schema;
-
     items = {};
 
-    get schema() {
-        return this.getSchema();
-    }
-
-    set schema(value) {
-        return this.setSchema(value);
-    }
-
-    constructor(schema) {
-        this.#schema = schema;
-    }
-
-    getSchema() {
-        return this.#schema;
-    }
-
-    setSchema(value) {
-        this.#schema = value;
+    extract(errors) {
+        this.items = errors[0].meta.errorMessages;
 
         return this;
     }
 
-    extract(error) {
-        this.items = error.errors[0].meta.errorMessages;
+    empty() {
+        this.items = {};
+
+        return this;
+    }
+
+    count() {
+        return Object.keys(this.items).length;
     }
 
     any() {
-        return Object.keys(this.items).length;
+        return this.count() > 0;
+    }
+
+    replace(bag) {
+        this.items = bag.items;
+
+        return this;
+    }
+
+    pull(...args) {
+        let output = this.items;
+
+        while (args.length) {
+            let key = args.shift();
+
+            if (typeof output[key] === 'undefined') {
+                return null
+            }
+
+            output = output[key];
+        }
+
+        return output;
     }
 }
 

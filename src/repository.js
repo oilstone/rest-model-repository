@@ -80,9 +80,9 @@ class Repository {
 
     save(attributes) {
         return this.#transformer.one(
-            this.#model.record(attributes).$save().catch(error => {
-                throw new ValidationError(error.errors[0].title).setBag(
-                    ErrorBag(this.#schema).extract(error)
+            this.#model.record(attributes).$save().catch(errors => {
+                throw new ValidationError(errors[0].title).setBag(
+                    new ErrorBag().extract(errors)
                 )
             })
         );
