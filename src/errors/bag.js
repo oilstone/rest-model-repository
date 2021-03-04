@@ -27,6 +27,16 @@ class Bag {
         return this;
     }
 
+    add(key, error) {
+        if (typeof this.items[key] === 'undefined') {
+            this.items[key] = [];
+        }
+
+        this.items[key].push(error);
+
+        return this;
+    }
+
     pull(...args) {
         let output = this.items;
 
