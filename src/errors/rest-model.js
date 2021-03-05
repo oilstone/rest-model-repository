@@ -1,4 +1,4 @@
-class Validation extends Error {
+class RestModel extends Error {
     #bag;
 
     set bag(value) {
@@ -20,4 +20,4 @@ class Validation extends Error {
     }
 }
 
-export default Validation;
+export default RestModel;

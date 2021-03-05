@@ -2,13 +2,14 @@ import Repository from './repository';
 import Transformer from './transformer';
 import Schema from './schema/schema';
 import ErrorBag from './errors/bag';
-import ValidationError from './errors/validation';
+import RestModelError from './errors/rest-model';
 
 export {
     Repository,
     Transformer,
     Schema,
-    ErrorBag
+    ErrorBag,
+    RestModelError
 };
 
 export default Repository;

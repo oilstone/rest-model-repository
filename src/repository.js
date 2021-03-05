@@ -1,6 +1,6 @@
 import Blender from '@oilstone/blender';
 import ErrorBag from './errors/bag';
-import ValidationError from './errors/validation';
+import RestModelError from './errors/rest-model';
 import Transformer from './transformer';
 
 class Repository {
@@ -48,21 +48,35 @@ class Repository {
         return this.#schema.blueprint();
     }
 
+    try(promise) {
+        return promise.catch(errors => {
+            throw new RestModelError(errors[0].title).setBag(
+                new ErrorBag().extract(errors)
+            )
+        });
+    }
+
     all() {
         return this.#transformer.many(
-            this.baseQuery().get()
+            this.try(
+                this.baseQuery().get()
+            )
         );
     }
 
     find(id) {
         return this.#transformer.one(
-            this.baseQuery().find(id)
+            this.try(
+                this.baseQuery().find(id)
+            )
         );
     }
 
     findOrFail(id) {
         return this.#transformer.one(
-            this.find(id)
+            this.try(
+                this.find(id)
+            )
         ).then(record => {
             if (!record) {
                 throw Error(`Could not find record [${id}]`)
@@ -74,17 +88,17 @@ class Repository {
 
     findMany(ids) {
         return this.#transformer.many(
-            this.baseQuery().where(this.#schema.primaryKey.name, 'in', ids).get()
+            this.try(
+                this.baseQuery().where(this.#schema.primaryKey.name, 'in', ids).get()
+            )
         );
     }
 
     save(attributes) {
         return this.#transformer.one(
-            this.#model.record(attributes).$save().catch(errors => {
-                throw new ValidationError(errors[0].title).setBag(
-                    new ErrorBag().extract(errors)
-                )
-            })
+            this.try(
+                this.#model.record(attributes).$save()
+            )
         );
     }
 
