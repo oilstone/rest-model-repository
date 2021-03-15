@@ -1,3 +1,6 @@
+import Schema from "./schema";
+import Collection from "./collection";
+
 class Property {
     #name;
 
@@ -5,7 +8,9 @@ class Property {
 
     #type;
 
-    #default;
+    #value;
+
+    #immutable = false;
 
     get type() {
         return this.getType();
@@ -15,12 +20,12 @@ class Property {
         return this.setType(value);
     }
 
-    get default() {
-        return this.getDefault();
+    get value() {
+        return this.getValue();
     }
 
-    set default(value) {
-        return this.setDefault(value);
+    set value(value) {
+        return this.setValue(value);
     }
 
     get name() {
@@ -42,14 +47,6 @@ class Property {
         return this;
     }
 
-    make() {
-        if (typeof this.#default !== 'undefined') {
-            return this.#default;
-        }
-
-        return new this.#type();
-    }
-
     getType() {
         return this.#type;
     }
@@ -60,12 +57,12 @@ class Property {
         return this;
     }
 
-    getDefault() {
-        return this.#default;
+    getValue() {
+        return this.#value;
     }
 
-    setDefault(value) {
-        this.#default = value;
+    setValue(value) {
+        this.#value = value;
 
         return this;
     }
@@ -78,6 +75,36 @@ class Property {
         this.#name = value;
 
         return this;
+    }
+
+    readOnly() {
+        this.#immutable = true;
+
+        return this;
+    }
+
+    isReadOnly() {
+        return this.#immutable;
+    }
+
+    isString() {
+        return this.#isType(String);
+    }
+
+    isNumber() {
+        return this.#isType(Number);
+    }
+
+    isSchema() {
+        return this.#isType(Schema);
+    }
+
+    isCollection() {
+        return this.#isType(Collection);
+    }
+
+    #isType(type) {
+        return this.getType() === type;
     }
 }
 

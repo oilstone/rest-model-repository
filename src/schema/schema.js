@@ -30,16 +30,6 @@ class Schema {
         return prop;
     }
 
-    blueprint() {
-        let blueprint = {};
-
-        for (let item in this.#items) {
-            blueprint[this.#items[item].name] = this.#items[item].make()
-        }
-
-        return blueprint;
-    }
-
     getPrimaryKey() {
         return this.#keyChain.primaryKey;
     }

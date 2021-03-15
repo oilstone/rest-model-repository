@@ -43,11 +43,7 @@ class Repository {
     mix(mixins) {
         Blender.on(this).mix(mixins);
     }
-
-    blueprint() {
-        return this.#schema.blueprint();
-    }
-
+    
     try(promise) {
         return promise.catch(errors => {
             throw new RestModelError(errors[0].title).setBag(
