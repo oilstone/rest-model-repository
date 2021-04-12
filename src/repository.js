@@ -49,6 +49,10 @@ class Repository {
             throw new RestModelError(errors[0].title).setBag(
                 new ErrorBag().extract(errors)
             )
+                .setId(errors[0].id)
+                .setMeta(errors[0].meta ? errors[0].meta : {})
+                .setStatus(parseInt(errors[0].status))
+                .setErrorCode(errors[0].code);
         });
     }
 
