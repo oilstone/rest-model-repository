@@ -1,7 +1,9 @@
 class Bag {
     items = {};
+    meta = {};
 
     extract(errors) {
+        this.meta = errors[0].meta;
         this.items = errors[0].meta.errorMessages;
 
         return this;
@@ -9,6 +11,7 @@ class Bag {
 
     empty() {
         this.items = {};
+        this.meta = {};
 
         return this;
     }
