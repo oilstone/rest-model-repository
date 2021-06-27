@@ -2,7 +2,15 @@ class Bag {
     items = {};
 
     extract(errors) {
-        this.items = errors[0].meta.errorMessages;
+        const details = errors[0];
+
+        if (!details) {
+            return this;
+        }
+
+        if (details.meta) {
+            this.items = details.meta.errorMessages || {};
+        }
 
         return this;
     }
