@@ -55,7 +55,7 @@ class Schema {
             const type = this.#items[name].getType()
 
             if (type instanceof Schema) {
-                blueprint[name] = this.#items[name].blueprint();
+                blueprint[name] = this.#items[name].getValue().blueprint();
                 continue;
             }
 
