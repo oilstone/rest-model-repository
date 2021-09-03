@@ -8,13 +8,11 @@ class Transformer {
     intersectionKeys(input) {
         let output = [];
 
-        this.#schema.getItems().forEach(item => {
-            const name = item.getName();
-
+        for (let name in this.#schema.getItems()) {
             if (name in input) {
                 output.push(name);
             }
-        });
+        }
 
         return output;
     }

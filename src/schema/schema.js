@@ -4,7 +4,7 @@ import Property from './property';
 class Schema {
     #keyChain;
 
-    #items = [];
+    #items = {};
 
     get primaryKey() {
         return this.getPrimaryKey();
@@ -25,9 +25,13 @@ class Schema {
     prop(name) {
         let prop = new Property(name, this.#keyChain);
 
-        this.#items.push(prop);
+        this.#items[name] = prop;
 
         return prop;
+    }
+
+    getProp(name) {
+        return this.#items[name] || null
     }
 
     getPrimaryKey() {
