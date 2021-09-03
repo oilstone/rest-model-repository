@@ -47,6 +47,23 @@ class Schema {
 
         return this;
     }
+
+    blueprint() {
+        const blueprint = {};
+
+        for (const name in this.#items) {
+            const type = this.#items[name].getType()
+
+            if (type instanceof Schema) {
+                blueprint[name] = this.#items[name].blueprint();
+                continue;
+            }
+
+            blueprint[name] = new type;
+        }
+
+        return blueprint;
+    }
 }
 
 export default Schema;
