@@ -53,15 +53,14 @@ class Schema {
 
         for (const name in this.#items) {
             const prop = this.#items[name];
-            const type = prop.getType();
             const value = prop.getValue();
 
-            if (type instanceof Schema) {
+            if (value instanceof Schema) {
                 blueprint[name] = this.#items[name].getValue().blueprint();
                 continue;
             }
 
-            blueprint[name] = typeof value === 'undefined' ? new type : value;
+            blueprint[name] = typeof value === 'undefined' ? null : value;
         }
 
         return blueprint;
