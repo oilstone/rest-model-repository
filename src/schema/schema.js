@@ -1,5 +1,6 @@
 import KeyChain from './key-chain';
 import Property from './property';
+import Collection from "./collection";
 
 class Schema {
     #keyChain;
@@ -54,6 +55,11 @@ class Schema {
         for (const name in this.#items) {
             const prop = this.#items[name];
             const value = prop.getValue();
+
+            if (value instanceof Collection) {
+                blueprint[name] = [];
+                continue;
+            }
 
             if (value instanceof Schema) {
                 blueprint[name] = this.#items[name].getValue().blueprint();
