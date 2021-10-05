@@ -1,11 +1,14 @@
 import Blender from '@oilstone/blender';
 import ErrorBag from './errors/bag';
 import RestModelError from './errors/rest-model';
+import Transformer from './transformer';
 
 class Repository {
     #model;
 
     #schema;
+
+    #transformer;
 
     get model() {
         return this.getModel();
@@ -23,9 +26,18 @@ class Repository {
         return this.setSchema(value);
     }
 
-    constructor(model, schema) {
+    get transformer() {
+        return this.getTransformer();
+    }
+
+    set transformer(value) {
+        return this.setTransformer(value);
+    }
+
+    constructor(model, schema, transformer = null) {
         this.#model = model;
         this.#schema = schema;
+        this.#transformer = transformer || new Transformer();
     }
 
     mix(mixins) {
@@ -45,20 +57,26 @@ class Repository {
     }
 
     all() {
-        return this.try(
-            this.baseQuery().get()
+        return this.#transformer.many(
+            this.try(
+                this.baseQuery().get()
+            )
         );
     }
 
     find(id) {
-        return this.try(
-            this.baseQuery().find(id)
+        return this.#transformer.one(
+            this.try(
+                this.baseQuery().find(id)
+            )
         );
     }
 
     findOrFail(id) {
-        return this.try(
-            this.find(id)
+        return this.#transformer.one(
+            this.try(
+                this.find(id)
+            )
         ).then(record => {
             if (!record) {
                 throw Error(`Could not find record [${id}]`)
@@ -69,14 +87,18 @@ class Repository {
     }
 
     findMany(ids) {
-        return this.try(
-            this.baseQuery().where(this.#schema.primaryKey.name, 'in', ids).get()
-        )
+        return this.#transformer.many(
+            this.try(
+                this.baseQuery().where(this.#schema.primaryKey.name, 'in', ids).get()
+            )
+        );
     }
 
     save(attributes) {
-        return this.try(
-            this.#model.record(attributes).$save()
+        return this.#transformer.one(
+            this.try(
+                this.#model.record(attributes).$save()
+            )
         );
     }
 
@@ -100,6 +122,16 @@ class Repository {
 
     setSchema(value) {
         this.#schema = value;
+
+        return this;
+    }
+
+    getTransformer() {
+        return this.#transformer;
+    }
+
+    setTransformer(value) {
+        this.#transformer = value;
 
         return this;
     }

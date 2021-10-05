@@ -1,47 +1,9 @@
 class Transformer {
-    #schema;
-
-    constructor(schema) {
-        this.#schema = schema;
-    }
-
-    intersectionKeys(input) {
-        let output = [];
-
-        for (let name in this.#schema.getItems()) {
-            if (name in input) {
-                output.push(name);
-            }
-        }
-
-        return output;
-    }
-
-    intersect(input, keys) {
-        let output = {};
-
-        keys.forEach(key => {
-            output[key] = input[key];
-        });
-
-        return output;
-    }
-
     many(promise) {
         return promise.then(collection => {
-            let intersectionKeys = null;
 
             return collection.map(record => {
-                let attributes = record.$attributes;
-
-                if (!intersectionKeys) {
-                    intersectionKeys = this.intersectionKeys(attributes);
-                }
-
-                return this.intersect(
-                    attributes,
-                    intersectionKeys
-                );
+                return record.$attributes;
             });
         });
     }
@@ -52,12 +14,7 @@ class Transformer {
                 return null;
             }
 
-            let attributes = record.$attributes;
-
-            return this.intersect(
-                attributes,
-                this.intersectionKeys(attributes)
-            );
+            return record.$attributes;
         });
     }
 }
