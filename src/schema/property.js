@@ -12,6 +12,8 @@ class Property {
 
     #immutable = false;
 
+    #metadata = {};
+
     get type() {
         return this.getType();
     }
@@ -34,6 +36,14 @@ class Property {
 
     set name(value) {
         return this.setName(value);
+    }
+
+    get metadata() {
+        return this.getMetadata();
+    }
+
+    set metadata(value) {
+        return this.setMetadata(value);
     }
 
     constructor(name, keyChain) {
@@ -73,6 +83,22 @@ class Property {
 
     setName(value) {
         this.#name = value;
+
+        return this;
+    }
+
+    getMetadata() {
+        return this.#metadata;
+    }
+
+    setMetadata(value) {
+        this.#metadata = value;
+
+        return this;
+    }
+
+    addMetadata(key, value) {
+        this.#metadata[key] = value;
 
         return this;
     }
