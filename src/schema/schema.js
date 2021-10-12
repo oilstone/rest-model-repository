@@ -5,18 +5,18 @@ import Collection from "./collection";
 class Schema {
     #keyChain;
 
-    #items = {};
+    #props = {};
 
     get primaryKey() {
         return this.getPrimaryKey();
     }
 
-    get items() {
-        return this.getItems();
+    get props() {
+        return this.getProps();
     }
 
-    set items(value) {
-        return this.setItems(value);
+    set props(value) {
+        return this.setProps(value);
     }
 
     constructor() {
@@ -26,25 +26,25 @@ class Schema {
     prop(name) {
         let prop = new Property(name, this.#keyChain);
 
-        this.#items[name] = prop;
+        this.#props[name] = prop;
 
         return prop;
     }
 
     getProp(name) {
-        return this.#items[name] || null
+        return this.#props[name] || null
     }
 
     getPrimaryKey() {
         return this.#keyChain.primaryKey;
     }
 
-    getItems() {
-        return this.#items;
+    getProps() {
+        return this.#props;
     }
 
-    setItems(value) {
-        this.#items = value;
+    setProps(value) {
+        this.#props = value;
 
         return this;
     }
@@ -52,8 +52,8 @@ class Schema {
     blueprint() {
         const blueprint = {};
 
-        for (const name in this.#items) {
-            const prop = this.#items[name];
+        for (const name in this.#props) {
+            const prop = this.#props[name];
             const value = prop.getValue();
 
             if (value instanceof Collection) {
@@ -62,7 +62,7 @@ class Schema {
             }
 
             if (value instanceof Schema) {
-                blueprint[name] = this.#items[name].getValue().blueprint();
+                blueprint[name] = this.#props[name].getValue().blueprint();
                 continue;
             }
 

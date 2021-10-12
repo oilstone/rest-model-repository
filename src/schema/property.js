@@ -109,6 +109,10 @@ class Property {
         return this;
     }
 
+    isPrimaryKey() {
+        return this.#keyChain.getPrimaryKey() === this;
+    }
+
     isReadOnly() {
         return this.#immutable;
     }
