@@ -102,6 +102,12 @@ class Repository {
         );
     }
 
+    destroy(id) {
+        return this.try(
+            this.#model.record({id}).$destroy()
+        );
+    }
+
     baseQuery() {
         return this.#model.query();
     }
