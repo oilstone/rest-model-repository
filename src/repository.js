@@ -104,7 +104,7 @@ class Repository {
 
     destroy(id) {
         return this.try(
-            this.#model.record({id}).$destroy()
+            this.#model.destroy(id)
         );
     }
 
