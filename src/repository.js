@@ -34,10 +34,10 @@ class Repository {
         return this.setTransformer(value);
     }
 
-    constructor(model, schema, transformer = null) {
+    constructor(model, schema, defaultTransformer = null) {
         this.#model = model;
         this.#schema = schema;
-        this.#transformer = transformer || new Transformer();
+        this.#transformer = new Transformer().register(defaultTransformer || new ExtractAttributes());
     }
 
     mix(mixins) {
@@ -101,7 +101,7 @@ class Repository {
     save(attributes) {
         return this.#transformer.one(
             this.try(
-                this.#model.record(attributes).$save()
+                this.#model.record(this.#transformer.save(attributes)).$save()
             )
         );
     }
@@ -142,6 +142,12 @@ class Repository {
 
     setTransformer(value) {
         this.#transformer = value;
+
+        return this;
+    }
+
+    addTransformer(transformer) {
+        this.#transformer.register(transformer);
 
         return this;
     }
