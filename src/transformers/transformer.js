@@ -3,6 +3,8 @@ class Transformer {
 
     setRepository(repository) {
         this.#repository = repository;
+
+        return this;
     }
 
     many(collection) {
