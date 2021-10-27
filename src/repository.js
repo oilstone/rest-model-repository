@@ -37,7 +37,7 @@ class Repository {
     constructor(model, schema, defaultTransformer = null) {
         this.#model = model;
         this.#schema = schema;
-        this.#transformer = new Transformer().register(defaultTransformer || new ExtractAttributes());
+        this.#transformer = new Transformer(this).register(defaultTransformer || new ExtractAttributes());
     }
 
     mix(mixins) {

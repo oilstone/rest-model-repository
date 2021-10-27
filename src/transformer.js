@@ -1,5 +1,28 @@
 class Transformer {
-    #transformers = [];
+    #transformers;
+
+    #repository;
+
+    get repository() {
+        return this.getRepository();
+    }
+
+    set repository(repository) {
+        this.setRepository(repository);
+    }
+
+    get transformers() {
+        return this.getTransformers();
+    }
+
+    set transformers(transformers) {
+        this.setTransformers(transformers);
+    }
+
+    constructor(repository, transformers = []) {
+        this.#repository = repository;
+        this.#transformers = transformers;
+    }
 
     register(transformer) {
         this.#transformers.push(transformer);
@@ -10,9 +33,7 @@ class Transformer {
     many(promise) {
         return promise.then(collection => {
             for (const transformer of this.#transformers) {
-                if (transformer.many) {
-                    collection = transformer.many(collection);
-                }
+                collection = transformer.setRepository(this.repository).many(collection);
             }
 
             return collection;
@@ -22,9 +43,7 @@ class Transformer {
     one(promise) {
         return promise.then(record => {
             for (const transformer of this.#transformers) {
-                if (transformer.one) {
-                    record = transformer.one(record);
-                }
+                record = transformer.setRepository(this.repository).one(record);
             }
 
             return record;
@@ -33,12 +52,30 @@ class Transformer {
 
     save(attributes) {
         for (const transformer of this.#transformers) {
-            if (transformer.save) {
-                attributes = transformer.save(attributes);
-            }
+            attributes = transformer.setRepository(this.repository).save(attributes);
         }
 
         return attributes;
+    }
+
+    getTransformers() {
+        return this.#transformers;
+    }
+
+    setTransformers(transformers) {
+        this.#transformers = transformers;
+
+        return this;
+    }
+
+    getRepository() {
+        return this.repository;
+    }
+
+    setRepository(repository) {
+        this.#repository = repository;
+
+        return this;
     }
 }
 

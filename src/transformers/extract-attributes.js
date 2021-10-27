@@ -1,4 +1,6 @@
-class ExtractAttributes {
+// noinspection JSUnresolvedVariable
+
+class ExtractAttributes  extends Transformer {
     many(collection) {
         return collection.map(record => {
             return record.$attributes;
