@@ -69,7 +69,7 @@ class Transformer {
     }
 
     getRepository() {
-        return this.repository;
+        return this.#repository;
     }
 
     setRepository(repository) {
