@@ -15,3 +15,5 @@ class ExtractAttributes  extends Transformer {
         return record.$attributes;
     }
 }
+
+export default ExtractAttributes;

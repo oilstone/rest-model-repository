@@ -2,6 +2,7 @@ import Blender from '@oilstone/blender';
 import ErrorBag from './errors/bag';
 import RestModelError from './errors/rest-model';
 import Transformer from './transformer';
+import ExtractAttributes from "./transformers/extract-attributes";
 
 class Repository {
     #model;

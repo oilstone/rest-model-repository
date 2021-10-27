@@ -17,3 +17,5 @@ class Transformer {
         return attributes;
     }
 }
+
+export default Transformer;
