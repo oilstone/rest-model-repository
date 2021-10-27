@@ -46,6 +46,10 @@ class Repository {
 
     try(promise) {
         return promise.catch(errors => {
+            if (!Array.isArray(errors)) {
+                throw errors;
+            }
+
             throw new RestModelError(errors[0].title).setBag(
                 new ErrorBag().extract(errors)
             )
