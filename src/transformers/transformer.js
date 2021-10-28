@@ -1,10 +1,22 @@
 class Transformer {
-    #schema = null;
+    #schema;
+
+    constructor(schema = null) {
+        this.#schema = schema;
+    }
+
+    get schema() {
+        return this.getSchema();
+    }
 
     setSchema(schema) {
         this.#schema = schema;
 
         return this;
+    }
+
+    getSchema() {
+        return this.#schema;
     }
 
     many(collection) {

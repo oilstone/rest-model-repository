@@ -43,7 +43,7 @@ class Repository {
         this.#model = model;
         this.#schema = schema;
         this.#transformerPipeline = new TransformerPipeline(schema, [
-            new ExtractAttributes,
+            new ExtractAttributes(schema),
         ]);
     }
 
@@ -103,6 +103,16 @@ class Repository {
                 this.baseQuery().where(this.#schema.primaryKey.name, 'in', ids).get()
             )
         );
+    }
+
+    findManyAndSort(ids) {
+        const primaryKeyName = this.#schema.primaryKey.name;
+
+        return this.findMany(ids).then(collection => {
+            return collection.sort((a, b) => {
+                return ids.indexOf(a[primaryKeyName]) - ids.indexOf(b[primaryKeyName]);
+            });
+        });
     }
 
     save(attributes) {
