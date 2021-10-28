@@ -1,14 +1,15 @@
 import Blender from '@oilstone/blender';
 import ErrorBag from './errors/bag';
 import RestModelError from './errors/rest-model';
-import Transformer from './transformer';
+import TransformerPipeline from './transformers/pipeline';
+import ExtractAttributes from "./transformers/extract-attributes";
 
 class Repository {
     #model;
 
     #schema;
 
-    #transformer;
+    #transformerPipeline;
 
     get model() {
         return this.getModel();
@@ -26,18 +27,24 @@ class Repository {
         return this.setSchema(value);
     }
 
+    get transformerPipeline() {
+        return this.getTransformerPipeline();
+    }
+
+    set transformerPipeline(value) {
+        return this.setTransformerPipeline(value);
+    }
+
     get transformer() {
-        return this.getTransformer();
+        return this.getTransformerPipeline();
     }
 
-    set transformer(value) {
-        return this.setTransformer(value);
-    }
-
-    constructor(model, schema, transformer = null) {
+    constructor(model, schema) {
         this.#model = model;
         this.#schema = schema;
-        this.#transformer = transformer || new Transformer();
+        this.#transformerPipeline = new TransformerPipeline(schema, [
+            new ExtractAttributes,
+        ]);
     }
 
     mix(mixins) {
@@ -61,7 +68,7 @@ class Repository {
     }
 
     all() {
-        return this.#transformer.many(
+        return this.#transformerPipeline.many(
             this.try(
                 this.baseQuery().get()
             )
@@ -69,7 +76,7 @@ class Repository {
     }
 
     find(id) {
-        return this.#transformer.one(
+        return this.#transformerPipeline.one(
             this.try(
                 this.baseQuery().find(id)
             )
@@ -77,7 +84,7 @@ class Repository {
     }
 
     findOrFail(id) {
-        return this.#transformer.one(
+        return this.#transformerPipeline.one(
             this.try(
                 this.find(id)
             )
@@ -91,7 +98,7 @@ class Repository {
     }
 
     findMany(ids) {
-        return this.#transformer.many(
+        return this.#transformerPipeline.many(
             this.try(
                 this.baseQuery().where(this.#schema.primaryKey.name, 'in', ids).get()
             )
@@ -99,9 +106,9 @@ class Repository {
     }
 
     save(attributes) {
-        return this.#transformer.one(
+        return this.#transformerPipeline.one(
             this.try(
-                this.#model.record(attributes).$save()
+                this.#model.record(this.#transformerPipeline.save(attributes)).$save()
             )
         );
     }
@@ -136,12 +143,18 @@ class Repository {
         return this;
     }
 
-    getTransformer() {
-        return this.#transformer;
+    getTransformerPipeline() {
+        return this.#transformerPipeline;
     }
 
-    setTransformer(value) {
-        this.#transformer = value;
+    setTransformerPipeline(value) {
+        this.#transformerPipeline = value;
+
+        return this;
+    }
+
+    addTransformer(transformer) {
+        this.#transformerPipeline.register(transformer);
 
         return this;
     }
