@@ -7,11 +7,11 @@ import Transformer from './transformers/transformer';
 
 export {
     Repository,
+    Transformer,
     Schema,
     Collection,
     ErrorBag,
-    RestModelError,
-    Transformer,
+    RestModelError
 };
 
 export default Repository;
