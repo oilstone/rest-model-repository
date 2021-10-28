@@ -55,8 +55,9 @@ class Schema {
         for (const name in this.#props) {
             const prop = this.#props[name];
             const value = prop.getValue();
+            const type = prop.getType();
 
-            if (value instanceof Collection) {
+            if (type === Array || type === Collection) {
                 blueprint[name] = [];
                 continue;
             }
