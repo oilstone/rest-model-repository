@@ -1,14 +1,14 @@
-class Transformer {
+class Pipeline {
     #transformers;
 
-    #repository;
+    #schema;
 
-    get repository() {
-        return this.getRepository();
+    get schema() {
+        return this.getSchema();
     }
 
-    set repository(repository) {
-        this.setRepository(repository);
+    set schema(schema) {
+        this.setSchema(schema);
     }
 
     get transformers() {
@@ -19,8 +19,8 @@ class Transformer {
         this.setTransformers(transformers);
     }
 
-    constructor(repository, transformers = []) {
-        this.#repository = repository;
+    constructor(schema, transformers = []) {
+        this.#schema = schema;
         this.#transformers = transformers;
     }
 
@@ -33,7 +33,7 @@ class Transformer {
     many(promise) {
         return promise.then(collection => {
             for (const transformer of this.#transformers) {
-                collection = transformer.setRepository(this.repository).many(collection);
+                collection = transformer.setSchema(this.schema).many(collection);
             }
 
             return collection;
@@ -43,7 +43,7 @@ class Transformer {
     one(promise) {
         return promise.then(record => {
             for (const transformer of this.#transformers) {
-                record = transformer.setRepository(this.repository).one(record);
+                record = transformer.setSchema(this.schema).one(record);
             }
 
             return record;
@@ -52,7 +52,7 @@ class Transformer {
 
     save(attributes) {
         for (const transformer of this.#transformers) {
-            attributes = transformer.setRepository(this.repository).save(attributes);
+            attributes = transformer.setSchema(this.schema).save(attributes);
         }
 
         return attributes;
@@ -68,15 +68,15 @@ class Transformer {
         return this;
     }
 
-    getRepository() {
-        return this.#repository;
+    getSchema() {
+        return this.#schema;
     }
 
-    setRepository(repository) {
-        this.#repository = repository;
+    setSchema(schema) {
+        this.#schema = schema;
 
         return this;
     }
 }
 
-export default Transformer;
+export default Pipeline;

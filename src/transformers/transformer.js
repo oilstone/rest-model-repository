@@ -1,8 +1,8 @@
 class Transformer {
-    #repository = null;
+    #schema = null;
 
-    setRepository(repository) {
-        this.#repository = repository;
+    setSchema(schema) {
+        this.#schema = schema;
 
         return this;
     }
