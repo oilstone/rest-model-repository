@@ -1,8 +1,20 @@
 class Transformer {
     #schema = null;
 
-    setSchema(schema) {
-        this.#schema = schema;
+    get schema() {
+        return this.getSchema();
+    }
+
+    set schema(value) {
+        this.setSchema(value);
+    }
+
+    getSchema() {
+        return this.#schema;
+    }
+
+    setSchema(value) {
+        this.#schema = value;
 
         return this;
     }
