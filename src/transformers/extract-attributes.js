@@ -4,7 +4,7 @@ import Transformer from "./transformer";
 class ExtractAttributes  extends Transformer {
     many(collection) {
         return collection.map(record => {
-            return record.$attributes;
+            return this.one(record);
         });
     }
 
@@ -13,7 +13,14 @@ class ExtractAttributes  extends Transformer {
             return null;
         }
 
-        return record.$attributes;
+        const primaryKey = this.getSchema().primaryKey;
+        const attributes = record.$attributes;
+
+        if (primaryKey.getType() === Number) {
+            attributes[primaryKey.name] = parseInt(attributes[primaryKey.name]);
+        }
+
+        return attributes;
     }
 }
 

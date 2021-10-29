@@ -1,5 +1,13 @@
 class Transformer {
-    #schema = null;
+    #schema;
+
+    constructor(schema = null) {
+        this.#schema = schema;
+    }
+
+    get schema() {
+        return this.getSchema();
+    }
 
     get schema() {
         return this.getSchema();
@@ -17,6 +25,10 @@ class Transformer {
         this.#schema = value;
 
         return this;
+    }
+
+    getSchema() {
+        return this.#schema;
     }
 
     many(collection) {
