@@ -43,7 +43,7 @@ class Schema {
         pieces.forEach(piece => {
             prop = schema.getProp(piece);
 
-            if (prop.getType() === Schema) {
+            if (prop && prop.getType() === Schema) {
                 schema = prop.getValue();
             }
         });
