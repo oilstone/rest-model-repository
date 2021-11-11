@@ -40,13 +40,17 @@ class Schema {
         let schema = this;
         let prop = null;
 
-        pieces.forEach(piece => {
-            prop = schema.getProp(piece);
+        for (let i = 0; i < pieces.length; i++) {
+            prop = schema.getProp(pieces[i]);
+
+            if (!prop) {
+                return null;
+            }
 
             if (prop.getType() === Schema) {
                 schema = prop.getValue();
             }
-        });
+        }
 
         return prop;
     }
