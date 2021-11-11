@@ -35,6 +35,22 @@ class Schema {
         return this.#props[name] || null
     }
 
+    pullProp(path) {
+        const pieces = path.split('.');
+        let schema = this;
+        let prop = null;
+
+        pieces.forEach(piece => {
+            prop = schema.getProp(piece);
+
+            if (prop.getType() === Schema) {
+                schema = prop.getValue();
+            }
+        });
+
+        return prop;
+    }
+
     getPrimaryKey() {
         return this.#keyChain.primaryKey;
     }

@@ -136,6 +136,14 @@ class Property {
     #isType(type) {
         return this.getType() === type;
     }
+
+    cast(value) {
+        if (this.isNumber()) {
+            return value * 1;
+        }
+
+        return value;
+    }
 }
 
 export default Property;
