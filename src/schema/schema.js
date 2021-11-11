@@ -47,7 +47,7 @@ class Schema {
                 return null;
             }
 
-            if (prop.getType() === Schema) {
+            if (prop && prop.getType() === Schema) {
                 schema = prop.getValue();
             }
         }
