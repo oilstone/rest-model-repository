@@ -121,6 +121,10 @@ class Property {
         return this.#isType(String);
     }
 
+    isBoolean() {
+        return this.#isType(Boolean);
+    }
+
     isNumber() {
         return this.#isType(Number);
     }
@@ -138,8 +142,18 @@ class Property {
     }
 
     cast(value) {
+        if (this.Boolean()) {
+            return !!value;
+        }
+
+        if (!value) {
+            return null;
+        }
+
         if (this.isNumber()) {
-            return value * 1;
+            value = parseInt(value);
+
+            return isNaN(value) ? null : value;
         }
 
         return value;
