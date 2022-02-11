@@ -142,7 +142,7 @@ class Property {
     }
 
     cast(value) {
-        if (this.Boolean()) {
+        if (this.isBoolean()) {
             return !!value;
         }
 
