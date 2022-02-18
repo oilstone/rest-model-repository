@@ -35,12 +35,38 @@ class Bag {
         return this;
     }
 
+    get(path) {
+        return this.pull(...path.split('.'));
+    }
+
+    put(path, error) {
+        return this.push(...path, error);
+    }
+
     add(key, error) {
         if (typeof this.items[key] === 'undefined') {
             this.items[key] = [];
         }
 
         this.items[key].push(error);
+
+        return this;
+    }
+
+    remove(key) {
+        if (typeof this.items[key] === 'undefined') {
+            return this;
+        }
+
+        delete this.items[key];
+
+        return this;
+    }
+
+    push(...args) {
+        const error = args.pop();
+
+        // TODO: Add a path to a error via multiple args
 
         return this;
     }
