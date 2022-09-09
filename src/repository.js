@@ -124,6 +124,8 @@ class Repository {
     }
 
     destroy(id) {
+        console.log(this.#model);
+
         return this.try(
             this.#model.destroy(id)
         );
@@ -165,6 +167,18 @@ class Repository {
 
     addTransformer(transformer) {
         this.#transformerPipeline.register(transformer);
+
+        return this;
+    }
+
+    scope(parent, key) {
+        const type = this.#schema.getType();
+
+        this.setModel(
+            parent.model.nest(type)
+                .scope(key)
+                .resolve(type)
+        );
 
         return this;
     }
