@@ -14,7 +14,7 @@ class ExtractAttributes  extends Transformer {
         }
 
         const primaryKey = this.getSchema().primaryKey;
-        const attributes = record.$attributes;
+        const attributes = record.$toObjectPrimitive();
 
         if (primaryKey.getType() === Number) {
             attributes[primaryKey.name] = parseInt(attributes[primaryKey.name]);
