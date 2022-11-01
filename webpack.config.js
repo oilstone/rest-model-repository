@@ -10,6 +10,9 @@ module.exports = {
         libraryTarget: 'umd',
         publicPath: '/'
     },
+    optimization: {
+        minimize: false
+    },
     devServer: {
         contentBase: './dist',
     },
