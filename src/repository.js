@@ -1,4 +1,4 @@
-import Blender from '@oilstone/blender';
+import { Blender } from '@oilstone/blender';
 import ErrorBag from './errors/bag';
 import RestModelError from './errors/rest-model';
 import TransformerPipeline from './transformers/pipeline';
