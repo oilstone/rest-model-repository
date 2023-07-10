@@ -64,9 +64,21 @@ class Bag {
     }
 
     push(...args) {
+        const items = this.items;
         const error = args.pop();
 
-        // TODO: Add a path to a error via multiple args
+        while (args.length) {
+            let key = args.shift();
+
+            if (typeof items[key] === 'undefined') {
+                items[key] = args.length ? {} : [];
+
+            }
+
+            items = items[key];
+        }
+
+        items.push(error);
 
         return this;
     }
